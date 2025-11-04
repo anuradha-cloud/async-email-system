@@ -11,6 +11,12 @@
   "keywords": [],
   "description": "",
   "dependencies": {
+    "@aws-cdk/aws-lambda-nodejs": "^1.203.0",
+    "@aws-sdk/client-sqs": "^3.922.0",
+    "aws-cdk-lib": "^2.221.1",
+    "constructs": "^10.4.2",
+    "dotenv": "^17.2.3",
+    "esbuild": "^0.25.12",
     "express": "^5.1.0"
   },
   "devDependencies": {
