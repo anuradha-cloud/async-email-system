@@ -1,0 +1,45 @@
+name: Deploy CDK using OIDC
+
+on:
+  push:
+    branches: [ v1 ]
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::369714029605:role/GitHub-CDK-Deploy-Role
+          aws-region: us-east-2
+
+      - name: Read .nvmrc
+        id: nvm
+        run: echo "VERSION=$(cat .nvmrc)" >> $GITHUB_OUTPUT
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ steps.nvm.outputs.VERSION }}
+
+      - name: Install dependencies
+        run: |
+          npm install -g aws-cdk
+          npm install
+          cd cdk && npm install
+
+      - name: Deploy CDK
+        working-directory: ./cdk
+        env:
+          SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
+        run: |
+          cdk deploy --require-approval never
