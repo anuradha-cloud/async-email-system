@@ -22,10 +22,14 @@ jobs:
           role-to-assume: arn:aws:iam::369714029605:role/GitHub-CDK-Deploy-Role
           aws-region: us-east-2
 
-      - name: Install Node
+      - name: Read .nvmrc
+        id: nvm
+        run: echo "VERSION=$(cat .nvmrc)" >> $GITHUB_OUTPUT
+
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: ${{ steps.nvm.outputs.VERSION }}
 
       - name: Install dependencies
         run: |

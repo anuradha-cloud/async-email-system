@@ -60,7 +60,7 @@ No manual `cdk deploy` required.
 
 ---
 
-### ✅ Notes
+### Notes
 
 - SES sandbox allows only verified `From` emails/domains
 - Changing the sender email requires:
